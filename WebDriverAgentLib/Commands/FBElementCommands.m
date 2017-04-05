@@ -170,15 +170,15 @@
 
 + (id<FBResponsePayload>)handleClick:(FBRouteRequest *)request
 {
-  FBElementCache *elementCache = request.session.elementCache;
-  NSString *elementUUID = request.parameters[@"uuid"];
-  XCUIElement *element = [elementCache elementForUUID:elementUUID];
-  NSError *error = nil;
-  if (![element fb_tapWithError:&error]) {
-    return FBResponseWithError(error);
-  }
-  return FBResponseWithElementUUID(elementUUID);
-}
+    FBElementCache *elementCache = request.session.elementCache;
+    NSString *elementUUID = request.parameters[@"uuid"];
+    XCUIElement *element = [elementCache elementForUUID:elementUUID];
+    NSError *error = nil;
+    if (![element fb_scrollToVisibleWithError:&error])
+        return FBResponseWithError(error);
+    if (![element fb_tapWithError:&error])
+        return FBResponseWithError(error);
+    return FBResponseWithElementUUID(elementUUID);}
 
 + (id<FBResponsePayload>)handleClear:(FBRouteRequest *)request
 {
